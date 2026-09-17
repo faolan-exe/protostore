@@ -124,7 +124,7 @@ main, header, footer { position: relative; z-index: 2; }
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding: 14px var(--gutter);
+  padding: 8px var(--gutter);
   background: color-mix(in oklab, var(--glass), transparent 18%);
   backdrop-filter: blur(26px) saturate(180%);
   -webkit-backdrop-filter: blur(26px) saturate(180%);
@@ -133,15 +133,19 @@ main, header, footer { position: relative; z-index: 2; }
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  font-weight: 700;
-  letter-spacing: 0.30em;
-  font-size: 13px;
-  text-transform: uppercase;
-  color: var(--ink);
   text-decoration: none;
+  line-height: 0;
 }
-.brand svg { width: 22px; height: 22px; display: block; }
+/* Wortmarke, der Verlauf steckt im SVG. Im Dunkeln etwas aufgehellt,
+   damit das violette Ende nicht im Hintergrund versinkt. */
+.brand img {
+  display: block;
+  width: auto;
+  height: 44px;
+  filter: saturate(calc(1 + var(--p) * 0.22)) brightness(calc(1 + var(--p) * 0.42));
+  transition: filter .5s var(--ease);
+}
+.foot .brand img { height: 19px; }
 .top nav { display: flex; align-items: center; gap: 6px; }
 .top nav a {
   color: var(--muted);
@@ -188,19 +192,6 @@ h1 {
 }
 h1 .line { display: block; }
 h1 .shout { color: var(--cyan); }
-@supports (color: color-mix(in oklch, red, blue)) {
-  h1 .shout {
-    background-image: linear-gradient(102deg,
-      var(--cyan) 0%,
-      var(--cyan) 14%,
-      color-mix(in oklch, var(--cyan), var(--mag)) 50%,
-      var(--mag) 86%,
-      var(--mag) 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-}
 h2 {
   margin: 0 0 18px;
   font-size: clamp(26px, 4.4vw, 54px);
@@ -251,6 +242,12 @@ a { color: var(--cyan); }
   padding: 132px 0 90px;
 }
 .hero-inner { position: relative; z-index: 3; max-width: 880px; }
+.hero-logo {
+  display: block;
+  width: min(430px, 76%);
+  height: auto;
+  margin: 0 0 30px -4px;
+}
 .hero .lead { margin-top: 26px; }
 
 .cta-row { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 34px; align-items: center; }

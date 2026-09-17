@@ -160,9 +160,34 @@
     }
 
     var titleNode = document.querySelector("[data-title-de]");
+    var titel = null;
     if (titleNode) {
-      document.title = titleNode.getAttribute(next === "de" ? "data-title-de" : "data-title-en");
+      titel = titleNode.getAttribute(next === "de" ? "data-title-de" : "data-title-en");
+      document.title = titel;
     }
+
+    /* Die Angaben fuer Suchmaschinen und Vorschaubilder muessen der
+       angezeigten Sprache folgen, sonst steht eine deutsche Beschreibung
+       ueber einer englischen Seite. */
+    function setzeInhalt(wahl, wert) {
+      if (!wert) return;
+      var node = document.querySelector(wahl);
+      if (node) node.setAttribute("content", wert);
+    }
+
+    var descNode = document.querySelector("meta[name=description][data-desc-de]");
+    if (descNode) {
+      var text = descNode.getAttribute(next === "de" ? "data-desc-de" : "data-desc-en");
+      if (text) {
+        descNode.setAttribute("content", text);
+        setzeInhalt('meta[property="og:description"]', text);
+        setzeInhalt('meta[name="twitter:description"]', text);
+      }
+    }
+    setzeInhalt('meta[property="og:title"]', titel);
+    setzeInhalt('meta[name="twitter:title"]', titel);
+    setzeInhalt('meta[property="og:locale"]', next === "de" ? "de_DE" : "en_US");
+    setzeInhalt('meta[property="og:locale:alternate"]', next === "de" ? "en_US" : "de_DE");
 
     var de = document.querySelector(".lang .de");
     var en = document.querySelector(".lang .en");
